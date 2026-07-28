@@ -1,13 +1,15 @@
-FROM eclipse-temurin:21-jdk-alpine AS build
-WORKDIR /app
-COPY .mvn .mvn
-COPY mvnw pom.xml ./
-RUN chmod +x mvnw && ./mvnw dependency:go-offline
-COPY src src
-RUN ./mvnw clean package -DskipTests
+#
+# Build stage
+#
+FROM maven:3.8.3-openjdk-17 AS build
+COPY . .
+RUN mvn clean install
 
-FROM eclipse-temurin:21-jre-alpine
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+#
+# Package stage
+#
+FROM eclipse-temurin:17-jdk
+COPY --from=build /target/your-build.jar demo.jar
+# ENV PORT=8080
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","demo.jar"]
