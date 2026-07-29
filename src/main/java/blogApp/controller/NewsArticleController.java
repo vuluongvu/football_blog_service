@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/news-articles")
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = {"http://127.0.0.1:5500", "https://football-blog-eta.vercel.app"})
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true)
 public class NewsArticleController {
